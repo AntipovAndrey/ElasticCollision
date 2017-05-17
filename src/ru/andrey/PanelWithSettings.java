@@ -9,6 +9,7 @@ public class PanelWithSettings extends JPanel {
 
     private JSlider leftWeightSlider, leftSpeedSlider;
     private JSlider rightWeightSlider, rightSpeedSlider;
+    private JSlider recoveryCoefficient;
     private PanelWithCarts carts;
 
 
@@ -80,26 +81,29 @@ public class PanelWithSettings extends JPanel {
         buttons.add(startButton);
         buttons.add(Box.createHorizontalStrut(25));
         JButton stopButton = new JButton(" Стоп ");
-        stopButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                stopSimulation(mainFrame);
-            }
-        });
+        stopButton.addActionListener(e -> stopSimulation(mainFrame));
         buttons.add(stopButton);
+        recoveryCoefficient = new JSlider(5, 10, 10);
+        recoveryCoefficient.setMajorTickSpacing(1);
+        recoveryCoefficient.setPaintTicks(true);
+        recoveryCoefficient.setBorder(BorderFactory.createTitledBorder("Коэфф. восстановления"));
 
 
         settings.add(Box.createVerticalStrut(25));
         settings.add(leftCartSettings);
         settings.add(Box.createVerticalStrut(25));
         settings.add(rightCartSettings);
+
+        settings.add(Box.createVerticalStrut(25));
+        settings.add(recoveryCoefficient);
         settings.add(Box.createVerticalStrut(25));
         settings.add(buttons);
         add(settings);
 
         carts = new PanelWithCarts(
                 leftSpeedSlider.getValue(), leftWeightSlider.getValue(),
-                rightSpeedSlider.getValue(), rightWeightSlider.getValue()
+                rightSpeedSlider.getValue(), rightWeightSlider.getValue(),
+                1.0 * recoveryCoefficient.getValue() / recoveryCoefficient.getMaximum()
         );
         mainFrame.add(carts, BorderLayout.CENTER);
     }
@@ -109,6 +113,7 @@ public class PanelWithSettings extends JPanel {
                 leftSpeedSlider.getValue(), leftWeightSlider.getValue(),
                 rightSpeedSlider.getValue(), rightWeightSlider.getValue()
         );
+        carts.setRecoveryCoefficient(1.0 * recoveryCoefficient.getValue() / recoveryCoefficient.getMaximum());
         carts.play();
     }
 
@@ -117,7 +122,8 @@ public class PanelWithSettings extends JPanel {
         mainFrame.remove(carts);
         carts = new PanelWithCarts(
                 leftSpeedSlider.getValue(), leftWeightSlider.getValue(),
-                rightSpeedSlider.getValue(), rightWeightSlider.getValue()
+                rightSpeedSlider.getValue(), rightWeightSlider.getValue(),
+                1.0 * recoveryCoefficient.getValue() / recoveryCoefficient.getMaximum()
         );
         mainFrame.add(carts, BorderLayout.CENTER);
         mainFrame.revalidate();
