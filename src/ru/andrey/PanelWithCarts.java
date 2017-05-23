@@ -78,8 +78,9 @@ public class PanelWithCarts extends JPanel {
                     leftCart.setSpeed(leftCart.getSpeed() * recoveryCoefficient);
 
                 }
-                leftCartLabel.setText("Скорость левой телжки: " + leftCart.getSpeed());
-                rightCartLabel.setText("Скорость правой телжки: " + rightCart.getSpeed());
+
+                leftCartLabel.setText(String.format("Скорость левой телжки: %.2f м/c", leftCart.getSpeed()));
+                rightCartLabel.setText(String.format("Скорость правой телжки: %.2f м/c", rightCart.getSpeed()));
                 leftCart.move();
                 rightCart.move();
             }

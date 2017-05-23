@@ -4,13 +4,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Cart extends JComponent {
-    public static final int WIDTH_OF_CART = 100, HEIGHT_OF_CART = 50;
+    static final int WIDTH_OF_CART = 100, HEIGHT_OF_CART = 50;
     private double speed;
     private int weight;
     private Point position;
     private Color topColor;
 
-    public Point getPosition() {
+    Point getPosition() {
         return position;
     }
 
