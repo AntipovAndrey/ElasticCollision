@@ -11,15 +11,14 @@ class PanelWithSettings extends JPanel {
     private JSlider rightWeightSlider, rightSpeedSlider;
     private JSlider recoveryCoefficient;
     private PanelWithCarts carts;
+    private JFrame mainFrame;
 
 
     PanelWithSettings(JFrame mainFrame) {
         super();
 
-
+        this.mainFrame = mainFrame;
         setBorder(BorderFactory.createLineBorder(Color.black));
-
-        Box settings = Box.createVerticalBox();
 
         Box leftCartSettings = Box.createVerticalBox();
         leftCartSettings.setBorder(BorderFactory.createTitledBorder("Левая тележка"));
@@ -28,10 +27,10 @@ class PanelWithSettings extends JPanel {
         Box leftSpeed = Box.createHorizontalBox();
 
         leftWeight.add(Box.createHorizontalStrut(5));
-        leftWeight.add(new JLabel("m (кг)     "));
-        leftWeightSlider = new JSlider(SwingConstants.HORIZONTAL, 10, 100, 50);
-        leftWeightSlider.setMajorTickSpacing(20);
-        leftWeightSlider.setMinorTickSpacing(5);
+        leftWeight.add(new JLabel("m (г)     "));
+        leftWeightSlider = new JSlider(SwingConstants.HORIZONTAL, 100, 1000, 500);
+        leftWeightSlider.setMajorTickSpacing(200);
+        leftWeightSlider.setMinorTickSpacing(50);
         leftWeightSlider.setPaintTicks(true);
         leftWeightSlider.setPaintLabels(true);
         leftWeight.add(leftWeightSlider);
@@ -57,10 +56,10 @@ class PanelWithSettings extends JPanel {
         Box rightSpeed = Box.createHorizontalBox();
 
         rightWeight.add(Box.createHorizontalStrut(5));
-        rightWeight.add(new JLabel("m (кг)     "));
-        rightWeightSlider = new JSlider(SwingConstants.HORIZONTAL, 10, 100, 50);
-        rightWeightSlider.setMajorTickSpacing(20);
-        rightWeightSlider.setMinorTickSpacing(5);
+        rightWeight.add(new JLabel("m (г)     "));
+        rightWeightSlider = new JSlider(SwingConstants.HORIZONTAL, 100, 1000, 500);
+        rightWeightSlider.setMajorTickSpacing(200);
+        rightWeightSlider.setMinorTickSpacing(50);
         rightWeightSlider.setPaintTicks(true);
         rightWeightSlider.setPaintLabels(true);
         rightWeight.add(rightWeightSlider);
@@ -91,7 +90,7 @@ class PanelWithSettings extends JPanel {
         JButton stopButton = new JButton(" Стоп ");
         stopButton.addActionListener(e -> {
             startButton.setEnabled(true);
-            stopSimulation(mainFrame);
+            stopSimulation();
         });
         buttons.add(stopButton);
         recoveryCoefficient = new JSlider(5, 10, 10);
@@ -110,7 +109,7 @@ class PanelWithSettings extends JPanel {
         recoveryCoefficient.setPaintLabels(true);
         recoveryCoefficient.setBorder(BorderFactory.createTitledBorder("Коэфф. восстановления"));
 
-
+        Box settings = Box.createVerticalBox();
         settings.add(Box.createVerticalStrut(25));
         settings.add(leftCartSettings);
         settings.add(Box.createVerticalStrut(25));
@@ -120,14 +119,8 @@ class PanelWithSettings extends JPanel {
         settings.add(recoveryCoefficient);
         settings.add(Box.createVerticalStrut(25));
         settings.add(buttons);
-        add(settings);
 
-        carts = new PanelWithCarts(
-                leftSpeedSlider.getValue(), leftWeightSlider.getValue(),
-                rightSpeedSlider.getValue(), rightWeightSlider.getValue(),
-                1.0 * recoveryCoefficient.getValue() / recoveryCoefficient.getMaximum()
-        );
-        mainFrame.add(carts, BorderLayout.CENTER);
+        add(settings);
     }
 
     private void startSimulation() {
@@ -139,22 +132,22 @@ class PanelWithSettings extends JPanel {
         carts.play();
     }
 
-    private void stopSimulation(JFrame mainFrame) {
-        mainFrame.remove(carts);
+    void stopSimulation() {
+        try {
+            mainFrame.remove(carts);
+        } catch (NullPointerException ignored){}
+
         carts = new PanelWithCarts(
                 leftSpeedSlider.getValue(), leftWeightSlider.getValue(),
                 rightSpeedSlider.getValue(), rightWeightSlider.getValue(),
-                1.0 * recoveryCoefficient.getValue() / recoveryCoefficient.getMaximum()
+                1.0 * recoveryCoefficient.getValue() / recoveryCoefficient.getMaximum(),
+                (int) (mainFrame.getContentPane().getSize().getWidth() - getSize().getWidth())
         );
+
         mainFrame.add(carts, BorderLayout.CENTER);
         mainFrame.revalidate();
         mainFrame.repaint();
     }
-
-
-
-
-
 
 }
 

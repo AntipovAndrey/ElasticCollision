@@ -12,11 +12,11 @@ public class PanelWithCarts extends JPanel {
         this.recoveryCoefficient = recoveryCoefficient;
     }
 
-    PanelWithCarts(int leftSpeed, int leftWeight, int rightSpeed, int rightWeight, double recoveryCoefficient) {
+    PanelWithCarts(int leftSpeed, int leftWeight, int rightSpeed, int rightWeight, double recoveryCoefficient, int widthOfPanel) {
         super();
         int xMargin = 50;
         leftCart = new Cart(leftSpeed, new Point(xMargin, 300), leftWeight, new Color(118, 38, 255));
-        rightCart = new Cart(rightSpeed, new Point(1000 - Cart.WIDTH_OF_CART - xMargin, 300), rightWeight, new Color(13, 255, 139));
+        rightCart = new Cart(rightSpeed, new Point(widthOfPanel - Cart.WIDTH_OF_CART - xMargin, 300), rightWeight, new Color(13, 255, 139));
         setLayout(null);
         add(leftCart);
         add(rightCart);

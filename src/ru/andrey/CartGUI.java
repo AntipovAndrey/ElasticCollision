@@ -14,9 +14,12 @@ class CartGUI extends JFrame {
     }
 
     void start() {
+
         PanelWithSettings settings = new PanelWithSettings(this);
         add(settings, BorderLayout.EAST);
         setVisible(true);
+        settings.stopSimulation();
+
     }
 
 }
